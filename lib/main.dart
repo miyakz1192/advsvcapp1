@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'calendar_modal.dart';
 import 'advice_summary_all.dart';
-import 'dialog_detail.dart'
+import 'dialog_detail.dart';
 
 void main() {
   runApp(const MyApp());

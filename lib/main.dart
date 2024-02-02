@@ -3,6 +3,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'calendar_modal.dart';
+import 'advice_summary_all.dart';
+import 'dialog_detail.dart'
 
 void main() {
   runApp(const MyApp());
@@ -34,6 +36,14 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        //thanks: https://qiita.com/najeira/items/dfa20d0104bd4457bc9a
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(), // iOS風
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       home: const MyHomePage(title: 'おやもり'),
     );
@@ -98,6 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
           leading: Image.network('https://placehold.jp/50x50.png'),
           title: Text('あれがあれして、こうしてね〜'),
           subtitle: Text('2024/1/19 13:00'),
+          onTap: () {
+            // ここにボタンを押した時に呼ばれるコードを書く
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DialogDetail()),
+            );
+          },
           //trailing: Icon(Icons.more_vert),
         ),
       );
@@ -151,12 +168,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: double.infinity,
                 height: screenWidth * 0.3,
                 color: Colors.white,
-                child: Text(
-                  '日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみようYou have pushed the button this many times:',
-                  //overflow: TextOverflow.ellipsis,
-                  overflow: TextOverflow.fade,
-                  // "style: Theme.of(context).textTheme.bodyLarge" can not be faded. Its reason is not clear....
-                  style: TextStyle(fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
+                child: GestureDetector(
+                  child: Text('日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみようYou have pushed the button this many times:',
+                    //overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.fade,
+                    // "style: Theme.of(context).textTheme.bodyLarge" can not be faded. Its reason is not clear....
+                    style: TextStyle(fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
+                  ),
+                  onTap: () {
+                    // ここにボタンを押した時に呼ばれるコードを書く
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdviceSummaryAll()),
+                    );
+                  },
                 ),
               ),
             ),

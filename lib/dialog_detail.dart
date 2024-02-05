@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'advice_summary_model.dart';
 
 class DialogDetail extends StatelessWidget {
   @override

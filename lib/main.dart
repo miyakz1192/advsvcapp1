@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'calendar_modal.dart';
 import 'advice_summary_all.dart';
 import 'dialog_detail.dart';
+import 'advice_summary_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,6 +71,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String _summary = "アドバイスはありません。";
+  AdviceSummaryModel summary_model = AdviceSummaryModel();
+
   late CalendarModal calm = CalendarModal(context);
 
   void _incrementCounter() {
@@ -83,8 +87,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _select_date(){
-    setState((){_counter++;});
+  void _select_date(day){
+    setState((){
+        summary_model.getFromServer(calm.cal.selected_date);
+        _summary = summary_model.summary;
+      }
+    );
+  }
+
+  void _refresh(){
+    setState(() {
+      print("INFO: called REFRESH!!!");
+      //Flutter will detect what's variable was changed.
+      //so we must to write "_summary = summary_model.summary;"
+      _summary = summary_model.summary;
+    });
   }
 
   @override
@@ -100,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     List<Widget> myTiles = []; // 空のリストを作成
+
 
     // 動的にListTileを追加
     for (int i = 0; i < 10; i++) {
@@ -124,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String month = calm.cal.selected_date.month.toString();
     String day = calm.cal.selected_date.day.toString();
     String date_str = year + "-" + month + "-" + day;
+    Future<dynamic> run;
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -164,12 +183,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Card(
+              //Summary Area
               child: Container(
                 width: double.infinity,
                 height: screenWidth * 0.3,
                 color: Colors.white,
                 child: GestureDetector(
-                  child: Text('日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみようYou have pushed the button this many times:',
+                  child: Text("${_summary}",
                     //overflow: TextOverflow.ellipsis,
                     overflow: TextOverflow.fade,
                     // "style: Theme.of(context).textTheme.bodyLarge" can not be faded. Its reason is not clear....
@@ -179,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     // ここにボタンを押した時に呼ばれるコードを書く
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AdviceSummaryAll()),
+                      MaterialPageRoute(builder: (context) => AdviceSummaryAll(_summary)),
                     );
                   },
                 ),
@@ -261,10 +281,14 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => {
           calm.cal.call_back = _select_date,
           print("[S]==========================INFO:" + calm.cal.selected_date.toString()),
-          calm.showCalendarModal(),
+          calm.showCalendarModal(_refresh),
           print("***************************INFO:"),
-          _select_date(),
-          print("[E]==========================INFO:" + calm.cal.selected_date.toString())},
+          //TODO: FIXME: Async communication model for the future.
+          //_select_date(),
+          //_refresh(),
+          // run = summary_model.getFromServer(calm.cal.selected_date),
+          // run.then((response) => print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS AWAIT THEN!" + response.toString())),
+          print("[E]==========================INFO:" + calm.cal.selected_date.toString()),},
         tooltip: 'カレンダー',
         child: const Icon(Icons.calendar_month_sharp),
       ), // This trailing comma makes auto-formatting nicer for build methods.

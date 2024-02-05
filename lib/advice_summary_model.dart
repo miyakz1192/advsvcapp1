@@ -8,7 +8,7 @@ https://zenn.dev/iwaku/articles/2020-12-29-iwaku
 https://pub.dev/packages/http
  */
 class AdviceSummaryModel{
-  late String summary;
+  late String summary = "no summary";
 
   Future<dynamic> getFromServer(DateTime day) async{
     String y = day.year.toString();
@@ -27,6 +27,20 @@ class AdviceSummaryModel{
     print("INFO: [E] calling http get");
     var jsonResponse = jsonDecode(response.body);
     print(jsonResponse.toString());
+    String temp = "";
+    jsonResponse.forEach((element){
+      if( element.containsKey("advice2summary") ){
+        if( element["advice2summary"] != null ){
+          temp += element["advice2summary"];
+        }
+      }
+    });
+    if( temp.isNotEmpty ){
+      summary = temp;
+    }else{
+      summary = "no summary";
+    }
+
     //print(jsonResponse[2]["advice2summary"]);
     return jsonResponse;
   }

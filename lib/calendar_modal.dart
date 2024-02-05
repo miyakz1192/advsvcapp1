@@ -11,7 +11,7 @@ class Calendar extends StatefulWidget {
 //  const Calendar({Key? key}) : super(key: key);
   DateTime selected_date = DateTime.now();
   Calendar({Key? key}) :super(key: key);
-  late VoidCallback call_back;
+  late Function call_back;
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -39,7 +39,7 @@ class _CalendarState extends State<Calendar> {
             _selectedDay = selectedDay;
             _forcusedDay = forcusedDay;
             widget.selected_date = _selectedDay;
-            widget.call_back();
+            widget.call_back(_selectedDay);
             print("[M]######" + widget.selected_date.toString());
           });
         }
@@ -112,7 +112,7 @@ class CalendarModal {
   BuildContext context;
   CalendarModal(this.context) : super();
 
-  void showCalendarModal() {
+  void showCalendarModal(Function onHideCalender) {
     print("///////////////////////////INFO:start");
     Navigator.push(
         context,
@@ -129,7 +129,7 @@ class CalendarModal {
                       ),*/
                       TextButton(
                         child: const Text('閉じる'),
-                        onPressed: () => hideModal(),
+                        onPressed: () => {hideModal(),onHideCalender()}
                         //onPressed: () {},
                       ),
                     ],

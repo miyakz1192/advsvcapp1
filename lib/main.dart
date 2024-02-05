@@ -6,6 +6,7 @@ import 'calendar_modal.dart';
 import 'advice_summary_all.dart';
 import 'dialog_detail.dart';
 import 'advice_summary_model.dart';
+import 'dialog_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   String _summary = "アドバイスはありません。";
   AdviceSummaryModel summary_model = AdviceSummaryModel();
+  List<Widget> _myTiles = []; // 空のリストを作成
 
   late CalendarModal calm = CalendarModal(context);
 
@@ -89,8 +91,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _select_date(day){
     setState((){
-        summary_model.getFromServer(calm.cal.selected_date);
+        day = calm.cal.selected_date;
+        summary_model.getFromServer(day);
         _summary = summary_model.summary;
+
+        print("INFO: *********CALLING DIALOG MODEL FROM SV++++++++++");
+        Future<dynamic> serverCall = DialogModel.getFromServer(day);
+
+        _myTiles = [];
+
+        serverCall.then((dialogs){
+          dialogs.forEach((element){
+            DialogModel dialog = element;
+            //DEBUG PRINT
+            //print("INFO:(dialog) => ${dialog.audio2text},${dialog.text2advice}");
+            _myTiles.add(
+              ListTile(
+                leading: Image.network('https://placehold.jp/50x50.png'),
+                title: Text(dialog.audio2text.substring(0,9),overflow: TextOverflow.ellipsis),
+                subtitle: Text(calm.cal.selected_date.toString()),
+                onTap: () {
+                  // ここにボタンを押した時に呼ばれるコードを書く
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DialogDetail(dialog.audio2text,dialog.text2advice)),
+                  );
+                },
+                //trailing: Icon(Icons.more_vert),
+              ),
+            );
+          });
+        });
       }
     );
   }
@@ -116,9 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
-    List<Widget> myTiles = []; // 空のリストを作成
 
-
+    /*
     // 動的にListTileを追加
     for (int i = 0; i < 10; i++) {
       myTiles.add(
@@ -137,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     }
+     */
 
     String year = calm.cal.selected_date.year.toString();
     String month = calm.cal.selected_date.month.toString();
@@ -226,9 +257,9 @@ class _MyHomePageState extends State<MyHomePage> {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 print("************ IMAGE BUILDER CALLED *********************: ${index}");
-                return myTiles[index];
+                return _myTiles[index];
               },
-              itemCount: myTiles.length,
+              itemCount: _myTiles.length,
             ),
           ],
         ),

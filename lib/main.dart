@@ -225,54 +225,11 @@ class _MyHomePageState extends State<MyHomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
+                print("************ IMAGE BUILDER CALLED *********************: ${index}");
                 return myTiles[index];
               },
               itemCount: myTiles.length,
             ),
-            /*
-            ListTile(
-              leading: Image.network('https://placehold.jp/50x50.png'),
-              title: Text('あれがあれして、こうしてね〜'),
-              subtitle: Text('2024/1/19 13:00'),
-              //trailing: Icon(Icons.more_vert),
-            ),
-            */
-
-            /*
-            Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.3,
-              child :Text(
-                '日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみようYou have pushed the button this many times:',
-                //overflow: TextOverflow.ellipsis,
-                overflow: TextOverflow.fade,
-                // "style: Theme.of(context).textTheme.bodyLarge" can not be faded. Its reason is not clear....
-                style: TextStyle(fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize),
-              ),
-            ),
-            Container(
-              width: screenWidth * 0.8,
-              height: screenWidth * 0.3,
-              child :DecoratedText(
-                text: 'これはおしゃれな修飾のテキストです。日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみよう日本語もいってみようYou have pushed the button this many times:',
-                backgroundColor: Colors.blue,
-                //textColor: Colors.white,
-                textColor: Theme.of(context).hintColor,
-                borderRadius: 10.0,
-                padding: EdgeInsets.all(16.0),
-              ),
-            ),
-
-            Text(
-              'testiest',
-              style: Theme.of(context).textTheme.bodyLarge,
-              overflow: TextOverflow.fade,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-             */
           ],
         ),
       ),
@@ -280,15 +237,9 @@ class _MyHomePageState extends State<MyHomePage> {
         //onPressed: _incrementCounter,
         onPressed: () => {
           calm.cal.call_back = _select_date,
-          print("[S]==========================INFO:" + calm.cal.selected_date.toString()),
           calm.showCalendarModal(_refresh),
-          print("***************************INFO:"),
           //TODO: FIXME: Async communication model for the future.
-          //_select_date(),
-          //_refresh(),
-          // run = summary_model.getFromServer(calm.cal.selected_date),
-          // run.then((response) => print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS AWAIT THEN!" + response.toString())),
-          print("[E]==========================INFO:" + calm.cal.selected_date.toString()),},
+        },
         tooltip: 'カレンダー',
         child: const Icon(Icons.calendar_month_sharp),
       ), // This trailing comma makes auto-formatting nicer for build methods.
